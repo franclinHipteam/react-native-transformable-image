@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { Image } from 'react-native';
 
 import ViewTransformer from 'react-native-view-transformer';
+import CacheableImage from 'react-native-cacheable-image';
 
 let DEV = false;
 
@@ -99,14 +100,15 @@ export default class TransformableImage extends Component {
         contentAspectRatio={contentAspectRatio}
         onLayout={this.onLayout.bind(this)}
         style={this.props.style}>
-        <Image
+        <CacheableImage
           {...this.props}
-          style={[this.props.style, {backgroundColor: 'transparent'}]}
           resizeMode={'contain'}
+          style={[this.props.style, {backgroundColor: 'transparent'}]}
           onLoadStart={this.onLoadStart.bind(this)}
           onLoad={this.onLoad.bind(this)}
-          capInsets={{left: 0.1, top: 0.1, right: 0.1, bottom: 0.1}} //on iOS, use capInsets to avoid image downsampling
-        />
+          capInsets={{left: 0.1, top: 0.1, right: 0.1, bottom: 0.1}}
+          //source={{uri: "http://www.foobar.com/image.jpeg"}}
+          />
       </ViewTransformer>
     );
   }
