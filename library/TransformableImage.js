@@ -100,7 +100,7 @@ export default class TransformableImage extends Component {
         contentAspectRatio={contentAspectRatio}
         onLayout={this.onLayout.bind(this)}
         style={this.props.style}>
-        <CacheableImage
+        <CachedImage
           {...this.props}
           resizeMode={'contain'}
           style={[this.props.style, {backgroundColor: 'transparent'}]}
