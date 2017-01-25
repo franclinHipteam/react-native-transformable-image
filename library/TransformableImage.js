@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { Image } from 'react-native';
 
 import ViewTransformer from 'react-native-view-transformer';
-import CacheableImage from 'react-native-cacheable-image';
+import CachedImage from 'react-native-cached-image';
 
 let DEV = false;
 
@@ -142,28 +142,20 @@ export default class TransformableImage extends Component {
 
     DEV && console.log('getImageSize...' + JSON.stringify(source));
 
-    if (typeof Image.getSize === 'function') {
-      if (source && source.uri) {
-        Image.getSize(
-          source.uri,
-          (width, height) => {
-            DEV && console.log('getImageSize...width=' + width + ', height=' + height);
-            if (width && height) {
-              if(this.state.pixels && this.state.pixels.width === width && this.state.pixels.height === height) {
-                //no need to update state
-              } else {
-                this.setState({pixels: {width, height}});
-              }
+    if (typeof CachedImage.getSize === 'function') {
+      CachedImage.getSize(source.uri,
+        (width, height) => {
+          if (width && height) {
+            if (this.state.pixels && this.state.pixels.width === width && this.state.pixels.height === height) {
+              //no need to update state
+            } else {
+              this.setState({pixels: {width, height}});
             }
-          },
-          (error) => {
-            console.error('getImageSize...error=' + JSON.stringify(error) + ', source=' + JSON.stringify(source));
-          })
-      } else {
-        console.warn('getImageSize...please provide pixels prop for local images');
-      }
-    } else {
-      console.warn('getImageSize...Image.getSize function not available before react-native v0.28');
+          }
+        },
+        (error) => {
+          console.log('getImageSize...error=' + JSON.stringify(error) + ', source=' + JSON.stringify(source));
+        })
     }
   }
 
